@@ -13,5 +13,8 @@
     "passport-local": "~0.1.6",
     "passport.socketio": "0.0.4",
     "connect": "~2.7.1"
+  },
+  "engines": {
+    "node": "6.9.1"
   }
 }
