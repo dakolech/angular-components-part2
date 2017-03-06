@@ -42,9 +42,9 @@
 					<ul>
 						<li> What is a component? </li>
 						<li> How components looks like? </li>
-						<li> Built in directives </li>
 						<li> Useful debugging tools </li>
 						<li> Inputs/Outputs </li>
+						<li> Built in directives </li>
 						<li> Lifecycle hooks </li>
 						<li> Tests </li>
 					</ul>
@@ -117,6 +117,152 @@ class Greet {
         <section>
           <section>
             <h1>How components looks like?</h1>
+          </section>
+					<section>
+						<h3>Component Decorator</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+import { Component } from '@angular/core';
+@Component({
+  selector: 'stormtrooper',
+  template: '<div> I'm Stormtrooper!</div>',
+  styles: ['div { color: white; }']
+})
+						</code></pre>
+            <a href="https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html">Docs</a>
+					</section>
+					<section>
+						<h3>Component Class</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+class Stormtrooper {
+  private accuracy = 0;
+  private strength = 0;
+
+  constructor(jangoFett: JangoFett) {
+    this.copyAttrs(jangoFett.attr);
+  }
+
+  copyAttrs(attrs) {
+    Object.assign(this, attrs);
+  }
+
+  get accuracyValue() {
+    return 0;
+  }
+}
+						</code></pre>
+					</section>
+					<section>
+						<h3>More decorators</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+import { Input, Output, HostListener } from '@angular/core';
+
+@Input() name: string;
+@Output() shoot: string;
+@HostListener('window:resize', ['$event'])
+onResize(event) {
+  this.accuracy -= event.target.innerWidth;
+}
+						</code></pre>
+            <a href="https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html">Docs</a>
+					</section>
+        </section>
+        <section>
+          <section>
+            <h1>Useful debugging tools</h1>
+          </section>
+					<section>
+						<h3> AngularJS </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+angular.element($0).scope()
+						</code></pre>
+					</section>
+					<section>
+						<h3> Angular </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+ng.probe($0).componentInstance
+						</code></pre>
+					</section>
+					<section>
+						<h3> Detect Changes </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
+						</code></pre>
+					</section>
+					<section>
+						<h3>Angular Augury </h3>
+						<a href="https://augury.angular.io/">Homepage</a>
+					</section>
+        </section>
+        <section>
+          <section>
+            <h1>Inputs/Outputs</h1>
+          </section>
+					<section>
+						<h3> Two-way data binding </h3>
+						<img src="./images/two-way-binding.png"/>
+					</section>
+					<section>
+						<h3> Two-way data binding </h3>
+						<img src="./images/two-way-hell.png"/>
+					</section>
+					<section>
+						<h3> Chosen one </h3>
+					</section>
+					<section>
+						<h3> One-way data binding </h3>
+						<img src="./images/one-way.png"/>
+					</section>
+					<section>
+						<h3> Input </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+@Input() name: string;
+@Input('master') masterName: string = 'Darth Sidious';
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+<sith [name]="knight.name" [master]="knight.master"></sith>
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+<sith name="Anakin" bind-master="knight.master"></sith>
+						</code></pre>
+					</section>
+					<section>
+						<h3> Output </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+@Output() damages: EventEmitter&lt;number&gt; = new EventEmitter();
+attack() {
+	this.damages.emit(90);
+}
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+<sith (damages)="onDamages($event)"></sith>
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+<sith on-damages="onDamages($event)"></sith>
+						</code></pre>
+					</section>
+					<section>
+						<h3> EventEmitter </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+class EventEmitter extends Subject {
+  constructor(isAsync?: boolean)
+  emit(value?: T)
+  subscribe(generatorOrNext?: any, error?: any, complete?: any) : any
+}
+						</code></pre>
+					</section>
+					<section>
+						<h3> Alternative syntax </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+@Component({
+  inputs: ['name', 'masterName'],
+  outputs: ['dagames'],
+})
+						</code></pre>
+					</section>
+        </section>
+        <section>
+          <section>
+            <h1>Built in directives</h1>
           </section>
         </section>
 			</div>
