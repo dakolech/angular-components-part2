@@ -205,18 +205,21 @@ ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
 						<h3> Two-way data binding </h3>
 						<img src="./images/two-way-hell.png"/>
 					</section>
-					<section>
-						<h3> Chosen one </h3>
+					<section data-background="./gifs/R2D2FallsDown.gif">
 					</section>
 					<section>
 						<h3> One-way data binding </h3>
 						<img src="./images/one-way.png"/>
 					</section>
+					<section data-background="./gifs/bb8ThumbUp.gif">
+					</section>
 					<section>
 						<h3> Input </h3>
 						<pre><code class="hljs" data-trim contenteditable>
-@Input() name: string;
-@Input('master') masterName: string = 'Darth Sidious';
+class SithComponent {
+  @Input() name: string;
+  @Input('master') masterName: string = 'Darth Sidious';
+}
 						</code></pre>
 						<pre><code class="hljs" data-trim contenteditable>
 <sith [name]="knight.name" [master]="knight.master"></sith>
@@ -224,13 +227,23 @@ ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
 						<pre><code class="hljs" data-trim contenteditable>
 <sith name="Anakin" bind-master="knight.master"></sith>
 						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+class EmpireComponent {
+  knight = {
+    name: 'Anakin',
+    master: 'Darth Tyranus',
+  }
+}
+						</code></pre>
 					</section>
 					<section>
 						<h3> Output </h3>
 						<pre><code class="hljs" data-trim contenteditable>
-@Output() damages: EventEmitter&lt;number&gt; = new EventEmitter();
-attack() {
-	this.damages.emit(90);
+class SithComponent {
+  @Output() damages: EventEmitter&lt;number&gt; = new EventEmitter();
+  attack() {
+    this.damages.emit(90);
+  }
 }
 						</code></pre>
 						<pre><code class="hljs" data-trim contenteditable>
@@ -238,6 +251,13 @@ attack() {
 						</code></pre>
 						<pre><code class="hljs" data-trim contenteditable>
 <sith on-damages="onDamages($event)"></sith>
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+class EmpireComponent {
+  onDamages(value) {
+    console.log(value); // 90
+  }
+}
 						</code></pre>
 					</section>
 					<section>
