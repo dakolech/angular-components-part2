@@ -42,8 +42,8 @@
 					<ul>
 						<li> What is a component? </li>
 						<li> How components looks like? </li>
-						<li> Useful debugging tools </li>
 						<li> Inputs/Outputs </li>
+						<li> Useful debugging tools </li>
 						<li> Built in directives </li>
 						<li> Lifecycle hooks </li>
 						<li> Tests </li>
@@ -104,20 +104,41 @@ customElements.define('x-product', XProduct);
 					<section>
 						<h3>Creating an Angular Component</h3>
 						<pre><code class="hljs" data-trim contenteditable>
+import { Component, OnInit } from '@angular/core';
+
 @Component({
-  selector: 'greet',
-  template: 'Hello {{name}}!'
+  selector: 'ds-barracks',
+  templateUrl: './barracks.component.html',
+  styleUrls: ['./barracks.component.scss']
 })
-class Greet {
-  name = 'World';
+export class BarracksComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
 }
 						</code></pre>
+					<aside class="notes">
+					  Za pomocą CLI
+					</aside>
 					</section>
 				</section>
         <section>
           <section>
             <h1>How components looks like?</h1>
           </section>
+					<section>
+						<h3>Directive Decorator</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+import { Directive } from '@angular/core';
+@Directive({
+  selector: '[force]',
+})
+						</code></pre>
+            <a href="https://angular.io/docs/ts/latest/api/core/index/Directive-decorator.html">Docs</a>
+					</section>
 					<section>
 						<h3>Component Decorator</h3>
 						<pre><code class="hljs" data-trim contenteditable>
@@ -131,7 +152,7 @@ import { Component } from '@angular/core';
             <a href="https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html">Docs</a>
 					</section>
 					<section>
-						<h3>Component Class</h3>
+						<h3>Component/Directive Class</h3>
 						<pre><code class="hljs" data-trim contenteditable>
 class Stormtrooper {
   private accuracy = 0;
@@ -163,34 +184,6 @@ onResize(event) {
   this.accuracy -= event.target.innerWidth;
 }
 						</code></pre>
-            <a href="https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html">Docs</a>
-					</section>
-        </section>
-        <section>
-          <section>
-            <h1>Useful debugging tools</h1>
-          </section>
-					<section>
-						<h3> AngularJS </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-angular.element($0).scope()
-						</code></pre>
-					</section>
-					<section>
-						<h3> Angular </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-ng.probe($0).componentInstance
-						</code></pre>
-					</section>
-					<section>
-						<h3> Detect Changes </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
-						</code></pre>
-					</section>
-					<section>
-						<h3>Angular Augury </h3>
-						<a href="https://augury.angular.io/">Homepage</a>
 					</section>
         </section>
         <section>
@@ -259,6 +252,7 @@ class EmpireComponent {
   }
 }
 						</code></pre>
+            <a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html">Docs</a>
 					</section>
 					<section>
 						<h3> EventEmitter </h3>
@@ -282,8 +276,239 @@ class EventEmitter extends Subject {
         </section>
         <section>
           <section>
+            <h1>Useful debugging tools</h1>
+          </section>
+					<section>
+						<h3> AngularJS </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+angular.element($0).scope()
+						</code></pre>
+					</section>
+					<section>
+						<h3> Angular </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+ng.probe($0).componentInstance
+						</code></pre>
+					</section>
+					<section>
+						<h3> Detect Changes </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
+						</code></pre>
+					</section>
+					<section>
+						<h3>Angular Augury </h3>
+						<a href="https://augury.angular.io/">Homepage</a>
+					</section>
+        </section>
+        <section>
+          <section>
             <h1>Built in directives</h1>
           </section>
+          <section>
+            <h3>ngClass</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div [ngClass]="{active: isActive}"&gt;
+&lt;div [ngClass]="['red', 'blue']"&gt;
+&lt;div [class.active]="isActive"&gt;
+						</code></pre>
+          </section>
+          <section>
+            <h3>ngStyle</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div [ngStyle]="{color: colorPreference}"&gt;
+&lt;div [style.color]="colorPreference"&gt;
+						</code></pre>
+          </section>
+          <section>
+            <h3>HTML element properties</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;a [href]="deathStart"&gt;Go to Death Star&lt;/a&gt;
+&lt;h3 [hidden]="!favoriteSith"&gt;{{ name }}&lt;/h3&gt;
+						</code></pre>
+          </section>
+          <section>
+            <h3>HTML DOM events</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;button (click)="toggleImage($event)"&gt;
+&lt;button (keypress)="toggleImage($event)"&gt;
+&lt;button (dragenter)="toggleImage($event)"&gt;
+						</code></pre>
+          </section>
+          <section>
+            <h3>Structural Directives</h3>
+            <a href="https://angular.io/docs/ts/latest/guide/structural-directives.html">Docs</a>
+          </section>
+          <section>
+            <h3>*ngIf</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div *ngIf="sith"&gt;{{sith.name}}&lt;/div&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div template="ngIf sith"&gt;{{sith.name}}&lt;/div&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;template [ngIf]="sith"&gt;
+  &lt;div&gt;{{sith.name}}&lt;/div&gt;
+&lt;/template&gt;
+						</code></pre>
+          </section>
+          <section>
+            <h3>*ngFor</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div *ngFor="let sith of siths; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd"&gt;
+  ({{i}}) {{sith.name}}
+&lt;/div&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div template="ngFor let sith of siths; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd"&gt;
+  ({{i}}) {{sith.name}}
+&lt;/div&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;template ngFor let-sith [ngForOf]="siths" let-i="index" let-odd="odd" [ngForTrackBy]="trackById"&gt;
+  &lt;div [class.odd]="odd"&gt;({{i}}) {{sith.name}}&lt;/div&gt;
+&lt;/template&gt;
+						</code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1> Lifecycle hooks </h1>
+          </section>
+					<section>
+						<h3> Lifecycle hooks </h3>
+						<img src="./images/lifecyclehooks.png" style="max-width: 40%;"/>
+            <a href="https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html">Docs</a>
+					</section>
+					<section>
+						<h3> Constructor </h3>
+						<pre><code class="hljs" data-trim contenteditable>
+constructor(private gun: GunService) {
+  gun.init();
+}
+						</code></pre>
+            <aside class="notes">
+              Nie uzywac
+            </aside>
+					</section>
+					<section>
+						<h3> ngOnChanges </h3>
+            Called before ngOnInit and whenever one or more data-bound input properties change.
+						<pre><code class="hljs" data-trim contenteditable>
+ngOnChanges(changes: SimpleChanges) {
+  for (let propName in changes) {
+    let chng = changes[propName];
+    let cur  = JSON.stringify(chng.currentValue);
+    let prev = JSON.stringify(chng.previousValue);
+    this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+  }
+}
+						</code></pre>
+            <aside class="notes">
+              Respond when Angular (re)sets data-bound input properties. The method receives a SimpleChanges object of current and previous property values.
+            </aside>
+					</section>
+					<section>
+						<h3> ngOnInit </h3>
+            Called once, after the first ngOnChanges.
+						<pre><code class="hljs" data-trim contenteditable>
+ngOnInit() {
+  this.prepareSomeData();
+}
+						</code></pre>
+            <aside class="notes">
+              Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component's input properties.
+            </aside>
+					</section>
+					<section>
+						<h3> ngDoCheck </h3>
+            Called during every change detection run, immediately after ngOnChanges and ngOnInit.
+						<pre><code class="hljs" data-trim contenteditable>
+ngDoCheck() {
+  this.makeChangeDetection();
+}
+						</code></pre>
+            <aside class="notes">
+              Detect and act upon changes that Angular can't or won't detect on its own.
+              this function will get called every single time an event has fired in the app that may cause a change, but not necessarily is considered a change.
+            </aside>
+					</section>
+					<section>
+						<h3> ngAfterContentInit </h3>
+            Called once after the first NgDoCheck.
+						<pre><code class="hljs" data-trim contenteditable>
+ngAfterContentInit() {
+  this.prepareSomeData();
+}
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;name-wrapper&gt;
+  &lt;span&gt; {{ name }} &lt;/span&gt;
+&lt;/name-wrapper&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div class="red"&gt;
+  &lt;ng-content&gt;&lt;/ng-content&gt;
+&lt;/div&gt;
+						</code></pre>
+            <aside class="notes">
+              Respond after Angular projects external content into the component's view.
+              Transclusion w jedynce
+              A component-only hook.
+            </aside>
+					</section>
+					<section>
+						<h3> ngAfterContentChecked </h3>
+            Called after the ngAfterContentInit and every subsequent NgDoCheck
+						<pre><code class="hljs" data-trim contenteditable>
+ngAfterContentChecked() {
+  this.makeChangeDetection();
+}
+						</code></pre>
+            <aside class="notes">
+              Respond after Angular checks the content projected into the component.
+              A component-only hook.
+            </aside>
+					</section>
+					<section>
+						<h3> ngAfterViewInit </h3>
+            Called once after the first ngAfterContentChecked.
+						<pre><code class="hljs" data-trim contenteditable>
+ngAfterViewInit() {
+  this.makeChangeDetection();
+}
+						</code></pre>
+            <aside class="notes">
+              Respond after Angular initializes the component's views and child views.
+              A component-only hook.
+            </aside>
+					</section>
+					<section>
+						<h3> ngAfterViewChecked </h3>
+            Called after the ngAfterViewInit and every subsequent ngAfterContentChecked.
+						<pre><code class="hljs" data-trim contenteditable>
+ngAfterViewChecked() {
+  this.makeChangeDetection();
+}
+						</code></pre>
+            <aside class="notes">
+              Respond after Angular checks the component's views and child views.
+              A component-only hook.
+            </aside>
+					</section>
+					<section>
+						<h3> ngOnDestroy </h3>
+           Called just before Angular destroys the directive/component.
+						<pre><code class="hljs" data-trim contenteditable>
+ngOnDestroy() {
+  this.makeSomeCleanup();
+}
+						</code></pre>
+            <aside class="notes">
+              Cleanup just before Angular destroys the directive/component. Unsubscribe observables and detach event handlers to avoid memory leaks.
+            </aside>
+					</section>
         </section>
 			</div>
 		</div>
