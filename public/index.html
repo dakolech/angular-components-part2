@@ -24,6 +24,9 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				<section>
+					<h1>Components - part 1</h1>
+				</section>
 				<section data-background-video="./movies/opening2.mp4" data-background-color="#000000">
 				</section>
 				<section data-background-video="./movies/hello.mp4" data-background-color="#000000">
@@ -46,7 +49,6 @@
 						<li> Useful debugging tools </li>
 						<li> Built in directives </li>
 						<li> Lifecycle hooks </li>
-						<li> Tests </li>
 					</ul>
 				</section>
 				<section>
@@ -336,6 +338,19 @@ ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
 						</code></pre>
           </section>
           <section>
+            <h3>ng-content</h3>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;name-wrapper&gt;
+  &lt;span&gt; {{ name }} &lt;/span&gt;
+&lt;/name-wrapper&gt;
+						</code></pre>
+						<pre><code class="hljs" data-trim contenteditable>
+&lt;div class="red"&gt;
+  &lt;ng-content&gt;&lt;/ng-content&gt;
+&lt;/div&gt;
+						</code></pre>
+          </section>
+          <section>
             <h3>Structural Directives</h3>
             <a href="https://angular.io/docs/ts/latest/guide/structural-directives.html">Docs</a>
           </section>
@@ -510,6 +525,11 @@ ngOnDestroy() {
             </aside>
 					</section>
         </section>
+				<section>
+					<section>
+						THE END
+					</section>
+				</section>
 			</div>
 		</div>
 
