@@ -25,525 +25,182 @@
 		<div class="reveal">
 			<div class="slides">
 				<section>
-					<h1>Components - part 1</h1>
+					<h1>Components - part 2</h1>
 				</section>
 				<section data-background-video="./movies/opening2.mp4" data-background-color="#000000">
 				</section>
-				<section data-background-video="./movies/hello.mp4" data-background-color="#000000">
-				</section>
 				<section>
-					<h1>Daniel Koza</h1>
+					<h1>Agenda</h1>
 					<ul>
-						<li> almost 2 years of JavaScript experience </li>
-						<li> AngularJS, Angular, Meteor, React... </li>
-						<li> Using Angular since RC </li>
-						<li> One (two) built appliaction in the Angular </li>
-					</ul>
-				</section>
-				<section>
-					<h1>Agenda, part 1</h1>
-					<ul>
-						<li> What is a component? </li>
-						<li> How components looks like? </li>
-						<li> Inputs/Outputs </li>
-						<li> Useful debugging tools </li>
-						<li> Built in directives </li>
-						<li> Lifecycle hooks </li>
-					</ul>
-				</section>
-				<section>
-					<h1>Agenda, part 2</h1>
-					<ul>
-						<li> Tests </li>
 						<li> What is a Shadow DOM? </li>
 						<li> Special CSS selectors in the Shadow DOM </li>
 						<li> Component decorators (@HostLister etc.) </li>
 						<li> Detection Strategy </li>
-						<li> Renderer </li>
+            <li> Tests </li>
 					</ul>
 				</section>
-				<section data-background-video="./movies/forcewithyou.mp4" data-background-color="#000000">
-				</section>
 				<section>
 					<section>
-						<h1>What is a Web Component?</h1>
-					</section>
-					<section>
-						<h3>Creating a Web Component</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-class XProduct extends HTMLElement {
-	constructor() {
-		super();
-		// Create a shadow root
-		var shadow = this.attachShadow({mode: 'open'});
-		// Create a standard img element and set it's attributes.
-		var img = document.createElement('img');
-		img.alt = this.getAttribute('data-name');
-		img.src = this.getAttribute('data-img');
-		img.width = '150';
-		img.height = '150';
-		img.className = 'product-img';
-		// Add the image to the shadow root.
-		shadow.appendChild(img);
-
-		// Add an event listener to the image.
-		img.addEventListener('click', () => {
-			window.location = this.getAttribute('data-url');
-		});
-	}
-}
-
-// Define the new element
-customElements.define('x-product', XProduct);
-						</code></pre>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components">Web Components</a>
-					</section>
-					<section>
-						<h3>Creating an Angular Component</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'ds-barracks',
-  templateUrl: './barracks.component.html',
-  styleUrls: ['./barracks.component.scss']
-})
-export class BarracksComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-						</code></pre>
-					<aside class="notes">
-					  Za pomocą CLI
-					</aside>
+						<h1>Tests</h1>
 					</section>
 				</section>
         <section>
-				<section>
-						<pre><code class="hljs" data-trim contenteditable>
-git checkout components-chapter-1
-						</code></pre>
-				</section>
           <section>
-            <h1>How components looks like?</h1>
+            <h1>What is a Shadow DOM?</h1>
           </section>
-					<section>
-						<h3>Directive Decorator</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-import { Directive } from '@angular/core';
+          <section>
+            <p>Shadow DOM provides encapsulation for DOM and CSS in a Web Component. Shadow DOM makes it so these things remain separate from the DOM of the main document. You</p>
+          </section>
+          <section>
+            <pre><code class="hljs" data-trim contenteditable>
+  // Create shadow DOM
+  var shadow = document.querySelector('#hostElement')
+    .attachShadow({mode: 'open'});
+  // Add some text to shadow DOM
+  shadow.innerHTML = '<span>Here is some new text</span>';
+  // Add some CSS to make the text red
+  shadow.innerHTML += '<style>span { color: red; }</style>';
+						</code></pre>
+						<a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM" target="_blank">Shadow DOM</a>
+          </section>
+          <section>
+            <video src="http://craftymind.com/factory/html5video/BigBuckBunny_640x360.mp4" controls></video>
+          </section>
+          <section>
+            <h3>
+              In Angular: ViewEncapsulation
+            </h3>
+            <ul>
+              <li><b>Emulated: </b> Emulate Native scoping of styles by adding an attribute containing surrogate id to the Host Element and pre-processing the style rules provided via ViewMetadata or ViewMetadata, and adding the new Host Element attribute to all selectors.</li>
+              <li><b>Native: </b> Use the native encapsulation mechanism of the renderer.</li>
+              <li><b>None: </b> Don't provide any template or style encapsulation. </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Special CSS selectors in the Shadow DOM</h1>
+            <a href="https://angular.io/docs/ts/latest/guide/component-styles.html#!#special-selectors" target="_blank">Angular docs</a>
+          </section>
+          <section>
+            <h3>:host</h3>
+            <p>Selects a shadow host element. May contain additional identifiers in parenthesis.</p>
+            <pre><code class="hljs" data-trim contenteditable>
+:host(.fancy) {
+  display: inline-block;
+  background: purple;
+}
+            </code></pre>
+          </section>
+          <section>
+            <h3>:host-context</h3>
+            <p>Selects a shadow host based on a matching parent element.</p>
+            <pre><code class="hljs" data-trim contenteditable>
+:host-context(.blocky) {
+  display: block
+  background: red;
+}
+            </code></pre>
+          </section>
+          <section>
+            <h3>/deep/ (deprecated) or >>></h3>
+            <p>Selects shadow trees that are N levels deep inside of an element.</p>
+            <pre><code class="hljs" data-trim contenteditable>
+x-foo /deep/ h1 {
+  color: red;
+}
+            </code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1>Component decorators</h1>
+          </section>
+          <section>
+            <h3>@HostLister</h3>
+            <pre><code class="hljs" data-trim contenteditable>
 @Directive({
-  selector: '[force]',
+  selector: '.lightsaber'
 })
-						</code></pre>
-            <a href="https://angular.io/docs/ts/latest/api/core/index/Directive-decorator.html">Docs</a>
-					</section>
-					<section>
-						<h3>Component Decorator</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-import { Component } from '@angular/core';
-@Component({
-  selector: 'stormtrooper',
-  template: '<div> I'm Stormtrooper!</div>',
-  styles: ['div { color: white; }']
+export class HostDirective {
+  @HostListener('mouseenter') onEnter() {
+    this.color= 'blue' ;
+  }
+
+  @HostListener('mouseleave') onLeave() {
+    this.color = 'red' ;
+  }
+}
+            </code></pre>
+          </section>
+          <section>
+            <h3>@HostBinding</h3>
+            <pre><code class="hljs" data-trim contenteditable>
+@Directive({
+  selector: '.lightsaber'
 })
-						</code></pre>
-            <a href="https://angular.io/docs/ts/latest/api/core/index/Component-decorator.html">Docs</a>
-					</section>
-					<section>
-						<h3>Component/Directive Class</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-class Stormtrooper {
-  private accuracy = 0;
-  private strength = 0;
-
-  constructor(jangoFett: JangoFett) {
-    this.copyAttrs(jangoFett.attr);
-  }
-
-  copyAttrs(attrs) {
-    Object.assign(this, attrs);
-  }
-
-  get accuracyValue() {
-    return 0;
-  }
+export class HostDirective {
+  @HostBinding('style.backgroundColor') color = 'green';
 }
-						</code></pre>
-					</section>
-					<section>
-						<h3>More decorators</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-import { Input, Output, HostListener } from '@angular/core';
-
-@Input() name: string;
-@Output() shoot: string;
-@HostListener('window:resize', ['$event'])
-onResize(event) {
-  this.accuracy -= event.target.innerWidth;
-}
-						</code></pre>
-					</section>
-        </section>
-        <section>
-				<section>
-						<pre><code class="hljs" data-trim contenteditable>
-git checkout components-chapter-2
-						</code></pre>
-				</section>
-          <section>
-            <h1>Inputs/Outputs</h1>
-          </section>
-					<section>
-						<h3> Two-way data binding </h3>
-						<img src="./images/two-way-binding.png"/>
-					</section>
-					<section>
-						<h3> Two-way data binding </h3>
-						<img src="./images/two-way-hell.png"/>
-					</section>
-					<section data-background="./gifs/R2D2FallsDown.gif">
-					</section>
-					<section>
-						<h3> One-way data binding </h3>
-						<img src="./images/one-way.png"/>
-					</section>
-					<section data-background="./gifs/bb8ThumbUp.gif">
-					</section>
-					<section>
-						<h3> Input </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-class SithComponent {
-  @Input() name: string;
-  @Input('master') masterName: string = 'Darth Sidious';
-}
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-<sith [name]="knight.name" [master]="knight.master"></sith>
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-<sith name="Anakin" bind-master="knight.master"></sith>
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-class EmpireComponent {
-  knight = {
-    name: 'Anakin',
-    master: 'Darth Tyranus',
-  }
-}
-						</code></pre>
-					</section>
-					<section>
-						<h3> Output </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-class SithComponent {
-  @Output() damages: EventEmitter&lt;number&gt; = new EventEmitter();
-  attack() {
-    this.damages.emit(90);
-  }
-}
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-<sith (damages)="onDamages($event)"></sith>
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-<sith on-damages="onDamages($event)"></sith>
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-class EmpireComponent {
-  onDamages(value) {
-    console.log(value); // 90
-  }
-}
-						</code></pre>
-            <a href="https://angular.io/docs/ts/latest/api/core/index/EventEmitter-class.html">Docs</a>
-					</section>
-					<section>
-						<h3> EventEmitter </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-class EventEmitter extends Subject {
-  constructor(isAsync?: boolean)
-  emit(value?: T)
-  subscribe(generatorOrNext?: any, error?: any, complete?: any) : any
-}
-						</code></pre>
-					</section>
-					<section>
-						<h3> Alternative syntax </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-@Component({
-  inputs: ['name', 'masterName'],
-  outputs: ['damages'],
-})
-						</code></pre>
-					</section>
-        </section>
-        <section>
-				<section>
-						<pre><code class="hljs" data-trim contenteditable>
-git checkout components-chapter-3
-						</code></pre>
-				</section>
-          <section>
-            <h1>Useful debugging tools</h1>
-          </section>
-					<section>
-						<h3> AngularJS </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-angular.element($0).scope()
-						</code></pre>
-					</section>
-					<section>
-						<h3> Angular </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-ng.probe($0).componentInstance
-						</code></pre>
-					</section>
-					<section>
-						<h3> Detect Changes </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-ng.probe($0)._debugInfo._view.changeDetectorRef.detectChanges()
-						</code></pre>
-					</section>
-					<section>
-						<h3>Angular Augury </h3>
-						<a href="https://augury.angular.io/">Homepage</a>
-					</section>
-        </section>
-        <section>
-				<section>
-						<pre><code class="hljs" data-trim contenteditable>
-git checkout components-chapter-4
-						</code></pre>
-				</section>
-          <section>
-            <h1>Built in directives</h1>
-          </section>
-          <section>
-            <h3>ngClass</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div [ngClass]="{active: isActive}"&gt;
-&lt;div [ngClass]="['red', 'blue']"&gt;
-&lt;div [class.active]="isActive"&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>ngStyle</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div [ngStyle]="{color: colorPreference}"&gt;
-&lt;div [style.color]="colorPreference"&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>HTML element properties</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;a [href]="deathStart"&gt;Go to Death Star&lt;/a&gt;
-&lt;h3 [hidden]="!favoriteSith"&gt;{{ name }}&lt;/h3&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>HTML DOM events</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;button (click)="toggleImage($event)"&gt;
-&lt;button (keypress)="toggleImage($event)"&gt;
-&lt;button (dragenter)="toggleImage($event)"&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>ng-content</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;name-wrapper&gt;
-  &lt;span&gt; {{ name }} &lt;/span&gt;
-&lt;/name-wrapper&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div class="red"&gt;
-  &lt;ng-content&gt;&lt;/ng-content&gt;
-&lt;/div&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>Structural Directives</h3>
-            <a href="https://angular.io/docs/ts/latest/guide/structural-directives.html">Docs</a>
-          </section>
-          <section>
-            <h3>*ngIf</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div *ngIf="sith"&gt;{{sith.name}}&lt;/div&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div template="ngIf sith"&gt;{{sith.name}}&lt;/div&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;template [ngIf]="sith"&gt;
-  &lt;div&gt;{{sith.name}}&lt;/div&gt;
-&lt;/template&gt;
-						</code></pre>
-          </section>
-          <section>
-            <h3>*ngFor</h3>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div *ngFor="let sith of siths; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd"&gt;
-  ({{i}}) {{sith.name}}
-&lt;/div&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div template="ngFor let sith of siths; let i=index; let odd=odd; trackBy: trackById" [class.odd]="odd"&gt;
-  ({{i}}) {{sith.name}}
-&lt;/div&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;template ngFor let-sith [ngForOf]="siths" let-i="index" let-odd="odd" [ngForTrackBy]="trackById"&gt;
-  &lt;div [class.odd]="odd"&gt;({{i}}) {{sith.name}}&lt;/div&gt;
-&lt;/template&gt;
-						</code></pre>
+            </code></pre>
           </section>
         </section>
         <section>
-				<section>
-						<pre><code class="hljs" data-trim contenteditable>
-git checkout components-chapter-5
-						</code></pre>
-				</section>
           <section>
-            <h1> Lifecycle hooks </h1>
+            <h1>Detection Strategy</h1>
           </section>
-					<section>
-						<h3> Lifecycle hooks </h3>
-						<img src="./images/lifecyclehooks.png" style="max-width: 40%;"/>
-            <a href="https://angular.io/docs/ts/latest/guide/lifecycle-hooks.html">Docs</a>
-					</section>
-					<section>
-						<h3> Constructor </h3>
-						<pre><code class="hljs" data-trim contenteditable>
-constructor(private gun: GunService) {
-  gun.init();
-}
-						</code></pre>
-            <aside class="notes">
-              Nie uzywac
-            </aside>
-					</section>
-					<section>
-						<h3> ngOnChanges </h3>
-            Called before ngOnInit and whenever one or more data-bound input properties change.
-						<pre><code class="hljs" data-trim contenteditable>
-ngOnChanges(changes: SimpleChanges) {
-  for (let propName in changes) {
-    let chng = changes[propName];
-    let cur  = JSON.stringify(chng.currentValue);
-    let prev = JSON.stringify(chng.previousValue);
-    this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
-  }
-}
-						</code></pre>
-            <aside class="notes">
-              Respond when Angular (re)sets data-bound input properties. The method receives a SimpleChanges object of current and previous property values.
-            </aside>
-					</section>
-					<section>
-						<h3> ngOnInit </h3>
-            Called once, after the first ngOnChanges.
-						<pre><code class="hljs" data-trim contenteditable>
-ngOnInit() {
-  this.prepareSomeData();
-}
-						</code></pre>
-            <aside class="notes">
-              Initialize the directive/component after Angular first displays the data-bound properties and sets the directive/component's input properties.
-            </aside>
-					</section>
-					<section>
-						<h3> ngDoCheck </h3>
-            Called during every change detection run, immediately after ngOnChanges and ngOnInit.
-						<pre><code class="hljs" data-trim contenteditable>
-ngDoCheck() {
-  this.makeChangeDetection();
-}
-						</code></pre>
-            <aside class="notes">
-              Detect and act upon changes that Angular can't or won't detect on its own.
-              this function will get called every single time an event has fired in the app that may cause a change, but not necessarily is considered a change.
-            </aside>
-					</section>
-					<section>
-						<h3> ngAfterContentInit </h3>
-            Called once after the first NgDoCheck.
-						<pre><code class="hljs" data-trim contenteditable>
-ngAfterContentInit() {
-  this.prepareSomeData();
-}
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;name-wrapper&gt;
-  &lt;span&gt; {{ name }} &lt;/span&gt;
-&lt;/name-wrapper&gt;
-						</code></pre>
-						<pre><code class="hljs" data-trim contenteditable>
-&lt;div class="red"&gt;
-  &lt;ng-content&gt;&lt;/ng-content&gt;
-&lt;/div&gt;
-						</code></pre>
-            <aside class="notes">
-              Respond after Angular projects external content into the component's view.
-              Transclusion w jedynce
-              A component-only hook.
-            </aside>
-					</section>
-					<section>
-						<h3> ngAfterContentChecked </h3>
-            Called after the ngAfterContentInit and every subsequent NgDoCheck
-						<pre><code class="hljs" data-trim contenteditable>
-ngAfterContentChecked() {
-  this.makeChangeDetection();
-}
-						</code></pre>
-            <aside class="notes">
-              Respond after Angular checks the content projected into the component.
-              A component-only hook.
-            </aside>
-					</section>
-					<section>
-						<h3> ngAfterViewInit </h3>
-            Called once after the first ngAfterContentChecked.
-						<pre><code class="hljs" data-trim contenteditable>
-ngAfterViewInit() {
-  this.makeChangeDetection();
-}
-						</code></pre>
-            <aside class="notes">
-              Respond after Angular initializes the component's views and child views.
-              A component-only hook.
-            </aside>
-					</section>
-					<section>
-						<h3> ngAfterViewChecked </h3>
-            Called after the ngAfterViewInit and every subsequent ngAfterContentChecked.
-						<pre><code class="hljs" data-trim contenteditable>
-ngAfterViewChecked() {
-  this.makeChangeDetection();
-}
-						</code></pre>
-            <aside class="notes">
-              Respond after Angular checks the component's views and child views.
-              A component-only hook.
-            </aside>
-					</section>
-					<section>
-						<h3> ngOnDestroy </h3>
-           Called just before Angular destroys the directive/component.
-						<pre><code class="hljs" data-trim contenteditable>
-ngOnDestroy() {
-  this.makeSomeCleanup();
-}
-						</code></pre>
-            <aside class="notes">
-              Cleanup just before Angular destroys the directive/component. Unsubscribe observables and detach event handlers to avoid memory leaks.
-            </aside>
-					</section>
+          <section>
+            <img src="./images/cd.svg" />
+          </section>
+          <section>
+            <h3>
+              In Angular: ChangeDetectionStrategy
+            </h3>
+            <ul>
+              <li><b>OnPush: </b> means that the change detector's mode will be set to CheckOnce during hydration.</li>
+              <li><b>Default: </b> means that the change detector's mode will be set to CheckAlways during hydration.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>What causes change?</h3>
+            <p>
+              Basically application state change can be caused by three things:
+            </p>
+            <ul>
+              <li><b>Events: </b>click, submit, …</li>
+              <li><b>XHR: </b> Fetching data from a remote server.</li>
+              <li><b>Timers: </b> setTimeout(), setInterval()</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Who notifies Angular?</h3>
+            <p>
+              Zone.js
+            </p>
+          </section>
+          <section>
+            <p>
+              Each component has its own change detector.
+            </p>
+            <img src="./images/cd2.svg" />
+          </section>
+          <section>
+            <p>
+              Some event was fired.
+            </p>
+            <img src="./images/cd3.svg" />
+          </section>
+          <section>
+            <p>
+              Smart change detection with OnPush
+            </p>
+            <img src="./images/cd4.svg" />
+          </section>
+        </section>
+        <section>
+          <section>
+            <h1> Tests </h1>
+          </section>
         </section>
 				<section>
 					<section>
